@@ -19,20 +19,17 @@
                 }
             }
 
-            class Task {
-                constructor(desc) {
-                    this.id = Math.random()
-                    this.desc = desc 
-                    this.state = 0 
-                    this.highlight = false
-                }
-            }
+            // class Task {
+            //     constructor(desc) {
+            //         this.id = Math.random()
+            //         this.desc = desc 
+            //         this.status = 0 
+            //         this.highlight = false
+            //     }
+            // }
             
             const state = {
-                tasks: [
-                    new Task("make bed"),
-                    new Task("grocery shopping")
-                ]
+                tasks: []
             }
 
             const view = state => `
@@ -59,8 +56,22 @@
             const update = {
                 add: (state, form) => {
                     const data = new FormData(form)
-                    const task = new Task(data.get('desc'))
-                    state.tasks.push(task)
+                    // const task = new Task(data.get('desc'))
+                    // state.tasks.push(task)
+                    const task = {
+                        id: Math.random(),
+                        desc: data.get('desc'),
+                        status: 0, 
+                        highlight: false
+                    }
+                    const postRequest = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(task)
+                    }
+                    fetch('./tasks', postRequest).then(() => app.run('getTasks'))
                     return state
                 },
                 done: (state, id) => {
@@ -92,10 +103,19 @@
                     const task = state.tasks.find(task => task.id == id)
                     task.highlight = true
                     return state 
+                },
+                getTasks: async (state) => {
+                    const tasks = await fetch('./tasks').then(res => res.json())
+                    // console.log(tasks)
+                    state.tasks = tasks
+                    return state
                 }
             }
 
             app.start('app', state, view, update)
+
+            app.run('getTasks')
+
         </script>
     </body>
 </html>

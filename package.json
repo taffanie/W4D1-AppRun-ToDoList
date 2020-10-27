@@ -1,0 +1,24 @@
+{
+  "name": "apprun_todolist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taffanie/W4D1-AppRun-ToDoList.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taffanie/W4D1-AppRun-ToDoList/issues"
+  },
+  "homepage": "https://github.com/taffanie/W4D1-AppRun-ToDoList#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
