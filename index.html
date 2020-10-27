@@ -24,8 +24,10 @@
                     this.id = Math.random()
                     this.desc = desc 
                     this.state = 0 
+                    this.highlight = false
                 }
             }
+            
             const state = {
                 tasks: [
                     new Task("make bed"),
@@ -37,13 +39,20 @@
                 <section>
                     <ul class="list-group">
                         ${state.tasks.map(task => {
-                            return `<li class="list-group-item" id="${task.status ? 'done' : ''}">${task.desc}${viewButton(task)}</li>`
+                            return `<li 
+                            id="${task.id}"
+                            draggable=true 
+                            ondragstart="app.run('dragStart', event)"
+                            class="${task.status ? 'done' : ''} ${task.highlight ? 'highlight' : ''} list-group-item">${task.desc}${viewButton(task)}</li>`
                         }).join("")}
                     </ul>
                     <form onsubmit="event.preventDefault();app.run('add', this)">
                         <input name="desc" type="text" class="form-control" placeholder="Add task" required>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                </section>
+                <section class="delete-section" ondrop="app.run('drop', event)" ondragover="event.preventDefault()">Danger Zone
+                    <article class="highlight-section" ondragover="event.preventDefault()" ondrop="app.run('highlight', event)">Highlight Zone</article>
                 </section>
             `
 
@@ -63,6 +72,26 @@
                     const index = state.tasks.findIndex(task => task.id == id)
                     state.tasks.splice(index, 1)
                     return state
+                },
+                dragStart: (state, event) => {
+                    const id = event.target.id 
+                    event.dataTransfer.setData('text', id)
+                    // console.log('dragging', id)
+                    return state
+                },
+                drop: (state, event) => {
+                    const id = event.dataTransfer.getData('text')
+                    const index = state.tasks.findIndex(task => task.id == id)
+                    state.tasks.splice(index, 1)
+                    // console.log('dropped', id)
+                    return state 
+                },
+                highlight: (state, event) => {
+                    event.stopPropagation()
+                    const id = event.dataTransfer.getData('text')
+                    const task = state.tasks.find(task => task.id == id)
+                    task.highlight = true
+                    return state 
                 }
             }
 

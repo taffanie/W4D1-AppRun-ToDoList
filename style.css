@@ -10,6 +10,31 @@ form {
     margin-top: 10px;
 }
 
-#done {
+.done {
     text-decoration: line-through;
 }
+
+.highlight {
+    color: greenyellow;
+}
+
+.delete-section {
+    border: solid 2px red;
+    height: 30vh;
+    margin-top: 24px;
+    padding: 8px;
+    color: red;
+    position: relative;
+}
+
+.highlight-section {
+    border: dashed 2px greenyellow;
+    width: 50%;
+    text-align: center;
+    padding: 32px;
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    color: greenyellow;
+}
+
